@@ -1,4 +1,4 @@
-# Sistema de Domésticas
+# Sistema de Gestión de Tareas Domésticas
 
 Plataforma para gestionar tareas domésticas en hogares compartidos utilizando arquitectura hexagonal (Hexagonal Architecture).
 
