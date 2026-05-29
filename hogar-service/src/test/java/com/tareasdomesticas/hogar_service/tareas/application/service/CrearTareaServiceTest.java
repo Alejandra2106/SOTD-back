@@ -35,12 +35,12 @@ class CrearTareaServiceTest {
 
     private CrearTareaCommand command(String nombre, String desc,
             LocalDateTime fecha, String dif, String pri) {
-        return new CrearTareaCommand(HOGAR_ID, nombre, desc, null, fecha, dif, pri);
+        return new CrearTareaCommand(HOGAR_ID, HOGAR_ID, nombre, desc, null, fecha, dif, pri);
     }
 
     @Test
     void debeCrearTareaCorrectamente() {
-        Tarea guardada = new Tarea(10L, HOGAR_ID, "Barrer", "Desc",
+        Tarea guardada = new Tarea(10L, HOGAR_ID, HOGAR_ID, "Barrer", "Desc",
                 null, fechaFutura, DificultadTarea.BAJA, PrioridadTarea.MEDIA);
 
         when(tareaRepository.existeTareaConMismoNombreEnSemana(any(), any(), any()))

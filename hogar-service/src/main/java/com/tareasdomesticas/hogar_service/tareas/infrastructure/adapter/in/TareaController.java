@@ -2,6 +2,8 @@ package com.tareasdomesticas.hogar_service.tareas.infrastructure.adapter.in;
 
 import java.util.List;
 import java.util.Map;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.http.HttpStatus;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -47,11 +49,18 @@ public class TareaController {
     }
 
     @PostMapping
-    public ResponseEntity<?> crearTarea(@Valid @RequestBody CrearTareaRequest req) {
+    public ResponseEntity<?> crearTarea(HttpServletRequest request, @Valid @RequestBody CrearTareaRequest req) {
         try {
+            Long idUsuarioAutenticado = (Long) request.getAttribute("idUsuario");
+            if (idUsuarioAutenticado == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body(Map.of("mensaje", "No autenticado. Inicie sesión para continuar."));
+            }
+
             CrearTareaResultDTO r = crearTareaUseCase.crearTarea(
                     new CrearTareaCommand(
                             req.getIdHogar(),
+                            idUsuarioAutenticado,
                             req.getNombre(),
                             req.getDescripcion(),
                             req.getFoto(),
@@ -70,11 +79,17 @@ public class TareaController {
     }
 
     @PutMapping("/{idTarea}")
-    public ResponseEntity<?> editarTarea(@PathVariable Long idTarea,
+    public ResponseEntity<?> editarTarea(HttpServletRequest request, @PathVariable Long idTarea,
             @Valid @RequestBody EditarTareaRequest req) {
         try {
+            Long idUsuarioAutenticado = (Long) request.getAttribute("idUsuario");
+            if (idUsuarioAutenticado == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body(Map.of("mensaje", "No autenticado. Inicie sesión para continuar."));
+            }
+
             TareaListadoDTO result = editarTareaUseCase.editarTarea(
-                    new EditarTareaCommand(idTarea, req.getNombre(), req.getDescripcion(),
+                    new EditarTareaCommand(idTarea, idUsuarioAutenticado, req.getNombre(), req.getDescripcion(),
                             req.getDificultad(), req.getFechaLimite()));
             return ResponseEntity.ok(Map.of("mensaje", "Tarea actualizada exitosamente", "tarea", result));
         } catch (IllegalArgumentException e) {
@@ -87,9 +102,14 @@ public class TareaController {
     }
 
     @DeleteMapping("/{idTarea}")
-    public ResponseEntity<?> eliminarTarea(@PathVariable Long idTarea) {
+    public ResponseEntity<?> eliminarTarea(HttpServletRequest request, @PathVariable Long idTarea) {
         try {
-            eliminarTareaUseCase.eliminarTarea(idTarea);
+            Long idUsuarioAutenticado = (Long) request.getAttribute("idUsuario");
+            if (idUsuarioAutenticado == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body(Map.of("mensaje", "No autenticado. Inicie sesión para continuar."));
+            }
+            eliminarTareaUseCase.eliminarTarea(idTarea, idUsuarioAutenticado);
             return ResponseEntity.ok(Map.of("mensaje", "Tarea eliminada exitosamente."));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(Map.of("mensaje", e.getMessage()));
@@ -101,11 +121,17 @@ public class TareaController {
     }
 
     @PatchMapping("/{idTarea}/estado")
-    public ResponseEntity<?> cambiarEstado(@PathVariable Long idTarea,
+    public ResponseEntity<?> cambiarEstado(HttpServletRequest request, @PathVariable Long idTarea,
             @Valid @RequestBody CambiarEstadoRequest req) {
         try {
+            Long idUsuarioAutenticado = (Long) request.getAttribute("idUsuario");
+            if (idUsuarioAutenticado == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body(Map.of("mensaje", "No autenticado. Inicie sesión para continuar."));
+            }
+
             TareaListadoDTO result = cambiarEstadoUseCase.cambiarEstado(
-                    new CambiarEstadoCommand(idTarea, req.getNuevoEstado()));
+                    new CambiarEstadoCommand(idTarea, req.getNuevoEstado(), idUsuarioAutenticado));
             return ResponseEntity.ok(Map.of("mensaje", "Estado actualizado correctamente.", "tarea", result));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(Map.of("mensaje", e.getMessage()));

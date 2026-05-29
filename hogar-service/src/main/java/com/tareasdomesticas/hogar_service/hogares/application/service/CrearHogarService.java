@@ -23,7 +23,8 @@ public class CrearHogarService implements CrearHogarUseCase {
     public CrearHogarResultDTO crearHogar(CrearHogarCommand command) {
 
         // ── Responsabilidad exclusiva del servicio: verificar unicidad en repositorio.
-        // Las validaciones de nombre y correo del usuario las hace el constructor de Usuario
+        // Las validaciones de nombre y correo del usuario las hace el constructor de
+        // Usuario
         // dentro de Hogar — no se duplican aquí.
         hogarRepository.buscarPorCorreoUsuario(command.correoUsuario())
                 .ifPresent(h -> {
@@ -31,13 +32,26 @@ public class CrearHogarService implements CrearHogarUseCase {
                             "Ya hace parte de un hogar, por lo que no puede crear otro hogar.");
                 });
 
-        // ── El constructor de Usuario valida: nombre no nulo/blank, longitud, correo no nulo.
-        // El constructor de Hogar valida: nombre 3-50 chars, descripción, creador no nulo,
+        // ── El constructor de Usuario valida: nombre no nulo/blank, longitud, correo
+        // no nulo.
+        // El constructor de Hogar valida: nombre 3-50 chars, descripción, creador no
+        // nulo,
         // y llama a creador.convertirEnAdministrador().
         // El servicio no repite ninguna de esas validaciones.
-        Usuario creador = new Usuario(command.usuarioId(), command.nombreUsuario(), command.correoUsuario());
-        Hogar hogar     = new Hogar(null, command.nombreHogar(), command.descripcion(), creador);
-        Hogar guardado  = hogarRepository.guardar(hogar);
+        Usuario creador = new Usuario(
+                command.usuarioId(),
+                command.nombreUsuario(),
+                command.correoUsuario());
+
+        creador.convertirEnAdministrador();
+
+        Hogar hogar = new Hogar(
+                null,
+                command.nombreHogar(),
+                command.descripcion(),
+                creador);
+
+        Hogar guardado = hogarRepository.guardar(hogar);
 
         log.info("Hogar creado. ID={}, admin={}",
                 guardado.getIdHogar(),

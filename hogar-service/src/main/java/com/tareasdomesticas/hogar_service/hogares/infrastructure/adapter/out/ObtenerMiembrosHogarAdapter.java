@@ -5,7 +5,6 @@ import com.tareasdomesticas.hogar_service.tareas.application.port.out.ObtenerMie
 
 import java.util.List;
 
-
 public class ObtenerMiembrosHogarAdapter implements ObtenerMiembrosHogarPort {
 
     private final HogarRepository hogarRepository;
@@ -17,7 +16,17 @@ public class ObtenerMiembrosHogarAdapter implements ObtenerMiembrosHogarPort {
     @Override
     public List<Long> obtenerIdsUsuarios(Long hogarId) {
         return hogarRepository.buscarPorId(hogarId)
-                .map(hogar -> hogar.getIdsUsuarios())
+                .map(h -> h.getIdsUsuarios())
+                .orElse(List.of());
+    }
+
+    @Override
+    public List<MiembroInfo> obtenerMiembros(Long hogarId) {
+        return hogarRepository.buscarPorId(hogarId)
+                .map(h -> h.getUsuarios().stream()
+                        .filter(u -> u.getIdUsuario() != null)
+                        .map(u -> new MiembroInfo(u.getIdUsuario(), u.getNombreUsuario()))
+                        .toList())
                 .orElse(List.of());
     }
 }

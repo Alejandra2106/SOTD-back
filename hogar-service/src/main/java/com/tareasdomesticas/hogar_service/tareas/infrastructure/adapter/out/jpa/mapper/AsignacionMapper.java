@@ -27,13 +27,16 @@ public final class AsignacionMapper {
                 e.getId().getIdTarea(),
                 e.getIdUsuarioAsignado(),
                 e.getEstadoTarea(),
-                e.isExcedente());
+                e.isExcedente(),
+                e.getIdUsuarioFinalizador(),
+                e.getFechaUltimoCambioEstado());
     }
 
     public static AsignacionSemanalTareaEntity toEntity(
             AsignacionSemanalTarea ast, AsignacionSemanalEntity asignacionEntity) {
         // El mapper no toma decisiones de negocio sobre el estado.
-        // La regla "sin usuario → PENDIENTE" ya la aplica AsignacionSemanalTarea.liberarResponsable()
+        // La regla "sin usuario → PENDIENTE" ya la aplica
+        // AsignacionSemanalTarea.liberarResponsable()
         // antes de llegar aquí. El mapper solo convierte lo que el dominio ya decidió.
         AsignacionSemanalTareaId id = new AsignacionSemanalTareaId(
                 ast.getIdAsignacion(), ast.getIdTarea());
@@ -43,6 +46,8 @@ public final class AsignacionMapper {
                 .idUsuarioAsignado(ast.getIdUsuarioAsignado())
                 .estadoTarea(ast.getEstado())
                 .excedente(ast.isExcedente())
+                .idUsuarioFinalizador(ast.getIdUsuarioFinalizador())
+                .fechaUltimoCambioEstado(ast.getFechaUltimoCambioEstado())
                 .build();
     }
 }

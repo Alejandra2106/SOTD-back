@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 public record CrearTareaCommand(
     Long idHogar,
+    Long idUsuarioCreador,
     String nombreTarea,
     String descripcionTarea,
     String fotoTarea,
