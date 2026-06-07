@@ -135,19 +135,35 @@ Por eso, es el único lugar del sistema donde se crean objetos concretos. Así, 
 
 ## Endpoints API
 
-### Grupos
-- `POST /api/hogares` - Crear grupo
-- `POST /api/hogares/{hogarId}/miembros` - Agregar miembro
-- `DELETE /api/hogares/{hogarId}/miembros` - Eliminar miembro
+### Auth
+POST   /api/auth/registro              - Registrar usuario
+POST   /api/auth/login                 - Iniciar sesión
+POST   /api/auth/logout                - Cerrar sesión
+
+### Hogares
+POST   /api/hogares                    - Crear hogar
+POST   /api/hogares/{hogarId}/miembros - Agregar miembro
+DELETE /api/hogares/{hogarId}/miembros - Eliminar miembro
 
 ### Tareas
-- `POST /api/tareas` - Crear tarea
-- `PUT /api/tareas/{idTarea}` - Editar tarea
-- `DELETE /api/tareas/{idTarea}` - Eliminar tarea
-- `PATCH /api/tareas/{idTarea}/estado` - Cambiar estado de tarea
-- `GET /api/tareas/hogares/{hogarId}` - Listar tareas por hogar
-- `GET /api/tareas/hogares/{hogarId}/filtrar` - Filtrar tareas por hogar
-- `POST /api/tareas/hogares/{hogarId}/asignacion-semanal` - Asignar tareas
+POST   /api/tareas                                          - Crear tarea
+PUT    /api/tareas/{idTarea}                                - Editar tarea
+DELETE /api/tareas/{idTarea}                                - Eliminar tarea
+PATCH  /api/tareas/{idTarea}/estado                         - Cambiar estado de tarea
+GET    /api/tareas/hogares/{hogarId}                        - Listar tareas por hogar
+GET    /api/tareas/hogares/{hogarId}/filtrar                - Filtrar tareas por hogar
+POST   /api/tareas/hogares/{hogarId}/asignacion-semanal     - Asignar tareas semanales
+
+### Invitaciones
+POST   /api/invitaciones/hogares/{idHogar}                  - Enviar invitación
+PATCH  /api/invitaciones/{idInvitacion}/respuesta           - Responder invitación
+GET    /api/invitaciones                                     - Listar invitaciones pendientes
+
+### Historial
+GET    /api/historial/hogares/{idHogar}                     - Consultar historial del hogar
+
+### Dashboard
+GET    /api/dashboard/hogares/{idHogar}                     - Obtener resumen del hogar
 
 ## Estructura del Proyecto
 
