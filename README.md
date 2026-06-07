@@ -136,9 +136,9 @@ Por eso, es el único lugar del sistema donde se crean objetos concretos. Así, 
 ## Endpoints API
 
 ### Auth
-POST   /api/auth/registro              - Registrar usuario
-POST   /api/auth/login                 - Iniciar sesión
-POST   /api/auth/logout                - Cerrar sesión
+POST   /api/auth/registro (Registrar usuario)
+POST   /api/auth/login (Iniciar sesión)
+POST   /api/auth/logout (Cerrar sesión)
 
 ### Hogares
 POST   /api/hogares                    - Crear hogar
