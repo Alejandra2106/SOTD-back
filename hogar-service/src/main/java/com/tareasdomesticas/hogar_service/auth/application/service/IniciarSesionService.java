@@ -43,7 +43,6 @@ public class IniciarSesionService implements IniciarSesionUseCase {
 
         String token = UUID.randomUUID().toString();
 
-        // Persistir sesión con ip_origen y user_agent capturados del HTTP request
         sesionRepo.crearSesion(cuenta.getId(), token, cmd.ipOrigen(), cmd.userAgent());
 
         log.info("Sesión iniciada: correo={}, ip={}", cuenta.getCorreo(), cmd.ipOrigen());

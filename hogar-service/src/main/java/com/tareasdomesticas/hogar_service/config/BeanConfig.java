@@ -9,6 +9,7 @@ import com.tareasdomesticas.hogar_service.auth.domain.port.out.PasswordEncoderPo
 import com.tareasdomesticas.hogar_service.auth.domain.port.out.SesionRepository;
 import com.tareasdomesticas.hogar_service.common.application.port.out.ResolverNombreUsuarioPort;
 import com.tareasdomesticas.hogar_service.dashboard.application.port.in.ObtenerDashboardUseCase;
+import com.tareasdomesticas.hogar_service.dashboard.application.port.out.ObtenerInfoHogarPort;
 import com.tareasdomesticas.hogar_service.dashboard.application.service.DashboardService;
 
 import com.tareasdomesticas.hogar_service.historial.application.port.in.ConsultarHistorialUseCase;
@@ -22,8 +23,10 @@ import com.tareasdomesticas.hogar_service.hogares.domain.port.out.HogarRepositor
 import com.tareasdomesticas.hogar_service.hogares.infrastructure.adapter.out.ObtenerMiembrosHogarAdapter;
 
 import com.tareasdomesticas.hogar_service.invitaciones.application.port.in.*;
+import com.tareasdomesticas.hogar_service.invitaciones.application.port.out.RegistrarMiembroPort;
 import com.tareasdomesticas.hogar_service.invitaciones.application.service.*;
 import com.tareasdomesticas.hogar_service.invitaciones.domain.port.out.InvitacionRepository;
+import com.tareasdomesticas.hogar_service.hogares.infrastructure.adapter.out.RegistrarMiembroAdapter;
 
 import com.tareasdomesticas.hogar_service.tareas.application.port.in.*;
 import com.tareasdomesticas.hogar_service.tareas.application.port.out.*;
@@ -38,7 +41,6 @@ import org.springframework.context.annotation.Primary;
 @Configuration
 public class BeanConfig {
 
-    // ── Adaptadores compartidos ────────────────────────────────────────────────
 
     @Bean
     public ObtenerMiembrosHogarPort obtenerMiembrosHogarPort(HogarRepository hogarRepo) {
@@ -49,19 +51,11 @@ public class BeanConfig {
     public LiberarTareasPort liberarTareasPort(AsignacionSemanalRepository asignacionRepo) {
         return new LiberarTareasAdapter(asignacionRepo);
     }
-
-    // ── Auth ──────────────────────────────────────────────────────────────────
-
     @Bean
     public RegistrarUsuarioUseCase registrarUsuarioUseCase(CuentaUsuarioRepository r,
                                                             PasswordEncoderPort enc) {
         return new RegistrarUsuarioService(r, enc);
     }
-
-    /**
-     * FIX: inyectar SesionRepository para que login persista token
-     * y logout pueda invalidarlo (HU3).
-     */
     @Bean
     public IniciarSesionUseCase iniciarSesionUseCase(CuentaUsuarioRepository r,
                                                       PasswordEncoderPort enc,
@@ -69,7 +63,6 @@ public class BeanConfig {
         return new IniciarSesionService(r, enc, sesionRepo);
     }
 
-    // ── Historial ─────────────────────────────────────────────────────────────
 
     @Bean
     public HistorialService historialService(HistorialRepository historialRepo) {
@@ -82,17 +75,12 @@ public class BeanConfig {
     @Bean
     @Primary
     public RegistrarAccionHistorialUseCase registrarAccionHistorialUseCase(HistorialService s) { return s; }
-
-    // ── Dashboard ─────────────────────────────────────────────────────────────
-
     @Bean
     public ObtenerDashboardUseCase obtenerDashboardUseCase(TareaRepository t,
                                                             AsignacionSemanalRepository a,
-                                                            HogarRepository h) {
-        return new DashboardService(t, a, h);
+                                                            ObtenerInfoHogarPort p) {
+        return new DashboardService(t, a, p);
     }
-
-    // ── Hogares ───────────────────────────────────────────────────────────────
 
     @Bean
     public CrearHogarUseCase crearHogarUseCase(HogarRepository r) {
@@ -109,7 +97,6 @@ public class BeanConfig {
         return new EliminarMiembroService(h, l, historial, rn);
     }
 
-    // ── Invitaciones ──────────────────────────────────────────────────────────
 
     @Bean
     public EnviarInvitacionUseCase enviarInvitacionUseCase(InvitacionRepository r,
@@ -118,10 +105,15 @@ public class BeanConfig {
     }
 
     @Bean
+    public RegistrarMiembroPort registrarMiembroPort(HogarRepository h,
+                                                      AgregarMiembroUseCase a) {
+        return new RegistrarMiembroAdapter(h, a);
+    }
+
+    @Bean
     public ResponderInvitacionUseCase responderInvitacionUseCase(InvitacionRepository r,
-                                                                  AgregarMiembroUseCase a,
-                                                                  HogarRepository h) {
-        return new ResponderInvitacionService(r, a, h);
+                                                                  RegistrarMiembroPort p) {
+        return new ResponderInvitacionService(r, p);
     }
 
     @Bean
@@ -129,8 +121,6 @@ public class BeanConfig {
             InvitacionRepository r) {
         return new ListarInvitacionesPendientesService(r);
     }
-
-    // ── Tareas ────────────────────────────────────────────────────────────────
 
     @Bean
     public CrearTareaUseCase crearTareaUseCase(TareaRepository r, RegistrarAccionHistorialUseCase h, ResolverNombreUsuarioPort rn) {

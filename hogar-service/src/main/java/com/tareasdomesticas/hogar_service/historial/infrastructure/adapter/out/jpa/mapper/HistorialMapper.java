@@ -13,7 +13,7 @@ public final class HistorialMapper {
                 e.getIdHogar(),
                 e.getIdTarea(),
                 e.getNombreTarea(),
-                e.getTipoAccion(), // ya es TipoAccion enum, no String
+                e.getTipoAccion(), 
                 e.getIdUsuarioActor(),
                 e.getNombreUsuarioActor(),
                 e.getFechaHora(),
@@ -26,7 +26,7 @@ public final class HistorialMapper {
                 .idHogar(d.getIdHogar())
                 .idTarea(d.getIdTarea())
                 .nombreTarea(d.getNombreTarea())
-                .tipoAccion(d.getTipoAccion()) // TipoAccion enum directamente
+                .tipoAccion(d.getTipoAccion()) 
                 .idUsuarioActor(d.getIdUsuarioActor())
                 .nombreUsuarioActor(d.getNombreUsuarioActor())
                 .fechaHora(d.getFechaHora())

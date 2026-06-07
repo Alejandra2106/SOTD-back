@@ -9,7 +9,6 @@ public final class CuentaUsuarioMapper {
     private CuentaUsuarioMapper() {}
 
     public static CuentaUsuario toDomain(CuentaUsuarioEntity e) {
-        // Pasar rol para que IniciarSesionService pueda devolverlo en LoginResultDTO (HU2)
         String rol = e.getRolUsuario() != null ? e.getRolUsuario().name() : "MIEMBRO";
         return CuentaUsuario.reconstruir(
                 e.getId(),
@@ -26,7 +25,7 @@ public final class CuentaUsuarioMapper {
                 .nombre(c.getNombre())
                 .correo(c.getCorreo())
                 .hashContrasena(c.getHashContrasena())
-                .rolUsuario(RolUsuario.MIEMBRO)   // nuevos usuarios siempre MIEMBRO
+                .rolUsuario(RolUsuario.MIEMBRO) 
                 .idHogar(c.getIdHogar())
                 .build();
     }

@@ -14,7 +14,7 @@ public final class InvitacionMapper {
                 e.getCorreoInvitado(),
                 e.getEstado(),
                 e.getCreatedAt(),
-                e.getFechaRespuesta());   // ← antes siempre llegaba null
+                e.getFechaRespuesta());   
     }
 
     public static InvitacionEntity toEntity(Invitacion i) {
@@ -24,7 +24,7 @@ public final class InvitacionMapper {
                 .nombreInvitado(i.getNombreInvitado())
                 .correoInvitado(i.getCorreoInvitado())
                 .estado(i.getEstado())
-                .fechaRespuesta(i.getFechaRespuesta())   // ← antes siempre null → violaba CHECK
+                .fechaRespuesta(i.getFechaRespuesta())   
                 .build();
     }
 }

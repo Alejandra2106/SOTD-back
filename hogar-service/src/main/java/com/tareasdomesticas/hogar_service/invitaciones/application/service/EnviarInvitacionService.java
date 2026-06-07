@@ -31,12 +31,10 @@ public class EnviarInvitacionService implements EnviarInvitacionUseCase {
 
         if (!hogar.getAdministrador().getIdUsuario().equals(cmd.idAdministrador()))
             throw new IllegalStateException("No tiene permisos para invitar miembros.");
-
-        // HU6: "Este correo ya es miembro del hogar."
+        
         if (invitacionRepo.existeMiembroConCorreo(cmd.correo(), cmd.idHogar()))
             throw new IllegalStateException("Este correo ya es miembro del hogar.");
 
-        // HU6: "Ya existe una invitación pendiente para este correo."
         invitacionRepo.buscarPendientePorCorreoYHogar(cmd.correo(), cmd.idHogar())
                 .ifPresent(i -> {
                     throw new IllegalStateException("Ya existe una invitación pendiente para este correo.");

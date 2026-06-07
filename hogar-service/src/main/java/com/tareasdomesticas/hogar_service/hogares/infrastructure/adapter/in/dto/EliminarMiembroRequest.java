@@ -11,8 +11,5 @@ public class EliminarMiembroRequest {
 
     @NotNull(message = "El idMiembro es obligatorio.")
     private Long idMiembro;
-
-    // Para construir el mensaje de la HU6: "Miembro eliminado. [nombre] fue
-    // eliminado del hogar."
     private String nombreMiembro;
 }

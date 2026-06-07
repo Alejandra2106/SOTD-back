@@ -47,7 +47,6 @@ public class CambiarEstadoTareaService implements CambiarEstadoTareaUseCase {
         ast.cambiarEstado(nuevoEstado);
         asignacionRepository.actualizarAsignacionTarea(ast);
 
-        // Actor = miembro asignado a la tarea (quien ejecuta el cambio de estado)
         Long idMiembro = ast.getIdUsuarioAsignado() != null
                 ? ast.getIdUsuarioAsignado()
                 : tarea.getIdUsuarioCreador();

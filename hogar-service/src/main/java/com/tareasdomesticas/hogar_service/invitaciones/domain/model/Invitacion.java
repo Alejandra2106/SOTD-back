@@ -3,11 +3,6 @@ package com.tareasdomesticas.hogar_service.invitaciones.domain.model;
 import java.time.LocalDateTime;
 import java.util.regex.Pattern;
 
-/**
- * Agregado del módulo de invitaciones.
- * El DDL no persiste idAdministrador; la autorización (admin only)
- * se valida en EnviarInvitacionService antes de llegar aquí.
- */
 public class Invitacion {
 
     private static final Pattern EMAIL_PATTERN = Pattern.compile(
@@ -34,8 +29,6 @@ public class Invitacion {
         this.estado = EstadoInvitacion.PENDIENTE;
         this.fechaEnvio = LocalDateTime.now();
     }
-
-    /** Constructor de reconstrucción desde persistencia. */
     public static Invitacion reconstruir(Long id, Long idHogar,
             String nombreInvitado, String correoInvitado,
             EstadoInvitacion estado, LocalDateTime fechaEnvio, LocalDateTime fechaRespuesta) {
@@ -66,9 +59,6 @@ public class Invitacion {
         this.estado = EstadoInvitacion.RECHAZADA;
         this.fechaRespuesta = LocalDateTime.now();
     }
-
-    // ── validaciones ──────────────────────────────────────────────────────────
-
     private void validarNombre(String n) {
         if (n == null || n.isBlank())
             throw new IllegalArgumentException("El nombre del invitado es obligatorio.");

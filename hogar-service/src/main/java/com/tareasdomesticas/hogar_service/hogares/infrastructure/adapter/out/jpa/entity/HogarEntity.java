@@ -22,18 +22,6 @@ public class HogarEntity {
     @Column(name = "descripcion_hogar", length = 255)
     private String descripcionHogar;
 
-    /**
-     * MERGE en lugar de ALL, sin orphanRemoval.
-     *
-     * CascadeType.ALL + orphanRemoval provocaba que al llamar a
-     * savedHogar.getUsuarios().clear() en guardar(), Hibernate programaba
-     * DELETE de todos los usuarios (incluido el admin). Luego el re-add
-     * del admin generaba un INSERT sobre una PK existente → excepción.
-     *
-     * Con MERGE Hibernate sólo actualiza (UPDATE) los usuarios que ya
-     * existen; la gestión del ciclo de vida de un usuario (alta/baja
-     * del hogar) se hace explícitamente desde UsuarioJpaRepository.
-     */
     @OneToMany(mappedBy = "hogar", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @Builder.Default
     private List<UsuarioEntity> usuarios = new ArrayList<>();

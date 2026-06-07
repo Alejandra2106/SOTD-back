@@ -4,7 +4,6 @@ import com.tareasdomesticas.hogar_service.auth.domain.port.out.PasswordEncoderPo
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
-/** Adaptador que aísla la dependencia de BCrypt del dominio (DIP). */
 @Component
 public class BcryptPasswordEncoderAdapter implements PasswordEncoderPort {
 

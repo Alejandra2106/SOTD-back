@@ -1,7 +1,7 @@
 package com.tareasdomesticas.hogar_service.infrastructure.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tareasdomesticas.hogar_service.auth.domain.port.out.SesionRepository;
+import com.tareasdomesticas.hogar_service.auth.application.port.out.ValidarSesionPort;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,27 +16,20 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Filtro de autenticación por token de sesión.
- *
- * Rutas públicas (sin token): POST /api/auth/registro, POST /api/auth/login
- * Todo lo demás requiere: Authorization: Bearer <token>
- * con una sesión activa y vigente en la tabla sesiones.
- */
+
 public class TokenAuthFilter extends OncePerRequestFilter {
 
-    /** Rutas que no requieren sesión activa. */
     private static final List<String> RUTAS_PUBLICAS = List.of(
             "/api/auth/registro",
             "/api/auth/login");
 
-    private final SesionRepository sesionRepository;
-    private final ObjectMapper objectMapper;
+    private final ValidarSesionPort validarSesionPort;
+    private final ObjectMapper      objectMapper;
     private static final Logger log = LoggerFactory.getLogger(TokenAuthFilter.class);
 
-    public TokenAuthFilter(SesionRepository sesionRepository, ObjectMapper objectMapper) {
-        this.sesionRepository = sesionRepository;
-        this.objectMapper = objectMapper;
+    public TokenAuthFilter(ValidarSesionPort validarSesionPort, ObjectMapper objectMapper) {
+        this.validarSesionPort = validarSesionPort;
+        this.objectMapper      = objectMapper;
     }
 
     @Override
@@ -47,12 +40,12 @@ public class TokenAuthFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
-            HttpServletResponse response,
-            FilterChain filterChain)
+                                    HttpServletResponse response,
+                                    FilterChain filterChain)
             throws ServletException, IOException {
 
-        String path = request.getRequestURI();
-        String method = request.getMethod();
+        String path       = request.getRequestURI();
+        String method     = request.getMethod();
         String authHeader = request.getHeader("Authorization");
         log.debug("TokenAuthFilter invoked: {} {} AuthorizationPresent={}", path, method, authHeader != null);
 
@@ -67,7 +60,7 @@ public class TokenAuthFilter extends OncePerRequestFilter {
 
         boolean esValida;
         try {
-            esValida = sesionRepository.esSesionValida(token);
+            esValida = validarSesionPort.esSesionValida(token);
         } catch (Exception e) {
             log.error("Error al verificar sesión para token {}", token, e);
             escribirError(response, HttpStatus.INTERNAL_SERVER_ERROR,
@@ -82,12 +75,9 @@ public class TokenAuthFilter extends OncePerRequestFilter {
             return;
         }
 
-        // Extraer idUsuario y adjuntarlo a la request para que los controllers lo usen
         try {
-            Long idUsuario = sesionRepository.obtenerIdUsuarioPorToken(token);
-            if (idUsuario != null) {
-                request.setAttribute("idUsuario", idUsuario);
-            }
+            validarSesionPort.obtenerIdUsuario(token)
+                    .ifPresent(idUsuario -> request.setAttribute("idUsuario", idUsuario));
         } catch (Exception e) {
             log.error("Error al obtener idUsuario para token {}", token, e);
             escribirError(response, HttpStatus.INTERNAL_SERVER_ERROR,
@@ -99,11 +89,10 @@ public class TokenAuthFilter extends OncePerRequestFilter {
     }
 
     private void escribirError(HttpServletResponse response,
-            HttpStatus status, String mensaje) throws IOException {
+                               HttpStatus status, String mensaje) throws IOException {
         response.setStatus(status.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding("UTF-8");
-        objectMapper.writeValue(response.getWriter(),
-                Map.of("mensaje", mensaje));
+        objectMapper.writeValue(response.getWriter(), Map.of("mensaje", mensaje));
     }
 }

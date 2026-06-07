@@ -14,7 +14,6 @@ public class CuentaUsuario {
     private final String correo;
     private final String hashContrasena;
     private final Long   idHogar;
-    /** "ADMINISTRADOR" o "MIEMBRO" — necesario para respuesta de login (HU2). */
     private final String rol;
 
     public CuentaUsuario(Long id, String nombre, String correo,
@@ -27,11 +26,9 @@ public class CuentaUsuario {
         this.correo         = correo.trim().toLowerCase();
         this.hashContrasena = hashContrasena;
         this.idHogar        = idHogar;
-        // Nuevos usuarios sin hogar son MIEMBRO por defecto
         this.rol            = "MIEMBRO";
     }
 
-    /** Constructor privado para reconstrucción desde persistencia con rol explícito. */
     private CuentaUsuario(Long id, String nombre, String correo,
                           String hashContrasena, Long idHogar, String rol) {
         this.id             = id;

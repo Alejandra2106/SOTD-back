@@ -22,6 +22,5 @@ public interface AsignacionSemanalRepository {
     void liberarTareasDeUsuario(Long idUsuario, Long hogarId);
     List<Long> obtenerIdsTareasExcedentes(Long hogarId);
 
-    /** Devuelve todas las asignaciones de la semana activa para el hogar (para dashboard). */
     List<AsignacionSemanalTarea> listarAsignacionesActivasPorHogar(Long idHogar);
 }

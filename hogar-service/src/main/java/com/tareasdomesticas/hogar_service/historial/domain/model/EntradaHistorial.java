@@ -2,17 +2,12 @@ package com.tareasdomesticas.hogar_service.historial.domain.model;
 
 import java.time.LocalDateTime;
 
-/**
- * Registro inmutable de una acción auditable.
- * idTarea es opcional: null para acciones sobre miembros
- * (MIEMBRO_AGREGADO, MIEMBRO_ELIMINADO, INVITACION_*).
- */
 public class EntradaHistorial {
 
     private final Long id;
     private final Long idHogar;
-    private final Long idTarea; // nullable para acciones sin tarea
-    private final String nombreTarea; // nullable
+    private final Long idTarea; 
+    private final String nombreTarea; 
     private final TipoAccion tipoAccion;
     private final Long idUsuarioActor;
     private final String nombreUsuarioActor;
@@ -31,7 +26,6 @@ public class EntradaHistorial {
             throw new IllegalArgumentException("idUsuarioActor es obligatorio.");
         if (fechaHora == null)
             throw new IllegalArgumentException("fechaHora es obligatoria.");
-        // idTarea puede ser null — no se valida aquí
         this.id = id;
         this.idHogar = idHogar;
         this.idTarea = idTarea;

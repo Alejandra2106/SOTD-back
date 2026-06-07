@@ -50,7 +50,6 @@ public class AgregarMiembroService implements AgregarMiembroUseCase {
                                 .orElseThrow(() -> new IllegalStateException(
                                                 "No se encontró el miembro recién agregado."));
 
-                // Actor = administrador que realizó la acción
                 String nombreAdmin = resolverNombre.resolverNombre(command.idAdministrador());
                 String detalle = "Miembro agregado: " + agregado.getCorreoUsuario();
                 historial.registrar(command.hogarId(), null, null,

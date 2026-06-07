@@ -42,7 +42,6 @@ public class EliminarMiembroService implements EliminarMiembroUseCase {
         hogarRepository.guardar(hogar);
         liberarTareasPort.liberarTareasDeUsuario(command.idMiembro(), command.hogarId());
 
-        // Actor = administrador que realizó la eliminación
         String nombreAdmin = resolverNombre.resolverNombre(command.idAdministrador());
         String nombreMiembro = resolverNombre.resolverNombre(command.idMiembro());
         String detalle = "Miembro eliminado: " + nombreMiembro;

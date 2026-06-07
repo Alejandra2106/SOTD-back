@@ -21,15 +21,6 @@ public class DashboardController {
     public DashboardController(ObtenerDashboardUseCase obtenerDashboardUseCase) {
         this.obtenerDashboardUseCase = obtenerDashboardUseCase;
     }
-
-    /**
-     * HU27 – Dashboard del hogar.
-     *
-     * GET /api/dashboard/hogares/{idHogar}?idUsuario=X&esAdministrador=true
-     *
-     * Admin → métricas de todo el hogar + carga de todos los miembros.
-     * Miembro → métricas filtradas por sus propias tareas asignadas.
-     */
     @GetMapping("/hogares/{idHogar}")
     public ResponseEntity<?> obtener(HttpServletRequest request,
             @PathVariable Long idHogar,

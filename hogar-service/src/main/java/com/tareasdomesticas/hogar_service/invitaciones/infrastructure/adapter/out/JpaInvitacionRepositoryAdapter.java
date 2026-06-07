@@ -32,7 +32,6 @@ public class JpaInvitacionRepositoryAdapter implements InvitacionRepository {
 
     @Override
     public Optional<Invitacion> buscarPendientePorCorreoYHogar(String correo, Long idHogar) {
-        // Pasamos el enum directamente — ya no String
         return jpaRepository.findByCorreoInvitadoAndIdHogarAndEstado(
                         correo, idHogar, EstadoInvitacion.PENDIENTE)
                 .map(InvitacionMapper::toDomain);

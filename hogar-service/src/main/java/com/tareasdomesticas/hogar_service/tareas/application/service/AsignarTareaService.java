@@ -85,8 +85,6 @@ public class AsignarTareaService implements AsignarTareaUseCase {
                                         nuevaAsignacion.getIdAsignacion(), tarea.getIdTarea(), usuarioId);
                         asignacionRepository.guardarAsignacionTarea(ast);
                         carga.put(usuarioId, carga.get(usuarioId) + tarea.getDificultad().getPeso());
-
-                        // Actor = miembro al que se le asignó la tarea
                         String detalleAsignada = "Asignada a " + nombreMiembro;
                         historial.registrar(hogarId, tarea.getIdTarea(), tarea.getNombreTarea(),
                                         TipoAccion.TAREA_ASIGNADA, usuarioId, nombreMiembro, detalleAsignada);
@@ -105,7 +103,6 @@ public class AsignarTareaService implements AsignarTareaUseCase {
                         excedentesDTO.add(new TareaExcedenteDTO(
                                         tarea.getIdTarea(), tarea.getNombreTarea(),
                                         tarea.getDificultad().name(), ast.getEstado().name()));
-                        // registrar pospuesta con detalle
                         String detallePospuesta = "Tarea pospuesta por falta de cupo en asignación";
                         historial.registrar(hogarId, tarea.getIdTarea(), tarea.getNombreTarea(),
                                         TipoAccion.TAREA_POSPUESTA, null, null, detallePospuesta);

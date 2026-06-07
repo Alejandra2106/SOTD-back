@@ -46,7 +46,6 @@ public class EliminarTareaService implements EliminarTareaUseCase {
 
             tareaRepository.eliminar(idTarea);
 
-            // Actor = administrador que ejecutó la eliminación (viene del request)
             String nombreAdmin = resolverNombre.resolverNombre(idUsuarioAdmin);
             String detalle = "Tarea eliminada: " + nombreTarea + " por " + nombreAdmin;
             historial.registrar(idHogar, null, nombreTarea,

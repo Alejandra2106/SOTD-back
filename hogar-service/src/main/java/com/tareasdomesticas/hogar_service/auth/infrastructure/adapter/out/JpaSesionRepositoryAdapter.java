@@ -21,8 +21,8 @@ public class JpaSesionRepositoryAdapter implements SesionRepository {
         SesionEntity sesion = SesionEntity.builder()
                 .idUsuario(idUsuario)
                 .token(token)
-                .ipOrigen(ipOrigen) // capturado del HTTP request
-                .userAgent(userAgent) // capturado del header User-Agent
+                .ipOrigen(ipOrigen) 
+                .userAgent(userAgent) 
                 .fechaInicio(LocalDateTime.now())
                 .fechaExpiracion(LocalDateTime.now().plusHours(24))
                 .activa(true)

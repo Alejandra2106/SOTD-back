@@ -4,7 +4,7 @@ public record EliminarMiembroCommand(
                 Long hogarId,
                 Long idAdministrador,
                 Long idMiembro,
-                String nombreMiembro // para construir el mensaje de la HU6
+                String nombreMiembro
 ) {
         public EliminarMiembroCommand(Long hogarId, Long idAdministrador, Long idMiembro) {
                 this(hogarId, idAdministrador, idMiembro, null);

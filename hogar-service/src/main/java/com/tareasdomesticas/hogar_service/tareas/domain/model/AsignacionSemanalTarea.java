@@ -72,7 +72,6 @@ public class AsignacionSemanalTarea {
         if (nuevoEstado == EstadoTarea.PENDIENTE)
             this.idUsuarioAsignado = null;
         this.estado = nuevoEstado;
-        // Registrar meta: quién finaliza y cuándo
         this.fechaUltimoCambioEstado = java.time.LocalDateTime.now();
         if (nuevoEstado == EstadoTarea.FINALIZADO) {
             this.idUsuarioFinalizador = this.idUsuarioAsignado;

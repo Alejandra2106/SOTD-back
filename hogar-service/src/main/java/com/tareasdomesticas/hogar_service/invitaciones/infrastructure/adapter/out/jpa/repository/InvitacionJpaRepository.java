@@ -11,15 +11,11 @@ import java.util.Optional;
 
 public interface InvitacionJpaRepository extends JpaRepository<InvitacionEntity, Long> {
 
-    /** Busca invitación pendiente por correo+hogar. */
     Optional<InvitacionEntity> findByCorreoInvitadoAndIdHogarAndEstado(
             String correoInvitado, Long idHogar, EstadoInvitacion estado);
 
-    /** Todas las invitaciones de un correo con un estado dado. */
     List<InvitacionEntity> findByCorreoInvitadoAndEstado(
             String correoInvitado, EstadoInvitacion estado);
-
-    /** Verifica si ya existe un miembro con ese correo en el hogar. */
     @Query("""
             SELECT COUNT(u) > 0
             FROM com.tareasdomesticas.hogar_service.hogares.infrastructure.adapter.out.jpa.entity.UsuarioEntity u

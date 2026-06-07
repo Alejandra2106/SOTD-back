@@ -39,7 +39,6 @@ public class HistorialController {
                     esAdministrador);
 
             if (resultado.isEmpty()) {
-                // HU26: mensajes distintos según rol
                 String msg = esAdministrador
                         ? "Sin actividad registrada aún. Crea o modifica tareas para ver el historial."
                         : "Aún no tienes actividad registrada. Tu historial aparecerá cuando tengas tareas asignadas.";

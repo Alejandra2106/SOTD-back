@@ -6,7 +6,7 @@ import java.util.List;
 public record DashboardDTO(
         long   totalTareas,
         long   tareasPendientes,
-        long   tareasPospuestas,      // excedente=true de la semana anterior
+        long   tareasPospuestas,      
         long   tareasAsignadas,
         long   tareasEnProceso,
         long   tareasFinalizadas,

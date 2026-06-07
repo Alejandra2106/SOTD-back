@@ -35,8 +35,6 @@ public class AuthController {
         this.iniciarSesionUseCase = iniciarSesionUseCase;
         this.sesionRepository = sesionRepository;
     }
-
-    /** HU1 – Registrar usuario */
     @PostMapping("/registro")
     public ResponseEntity<?> registrar(@Valid @RequestBody RegistrarUsuarioRequest req) {
         try {
@@ -58,8 +56,6 @@ public class AuthController {
                     .body(Map.of("mensaje", "Algo salió mal, inténtelo de nuevo."));
         }
     }
-
-    /** HU2 – Iniciar sesión */
     @PostMapping("/login")
     public ResponseEntity<?> iniciarSesion(@Valid @RequestBody IniciarSesionRequest req,
             HttpServletRequest request) {
@@ -75,7 +71,6 @@ public class AuthController {
                             request.getRemoteAddr(),
                             request.getHeader("User-Agent")));
 
-            // Persistir metadata de sesión (IP y User-Agent) en la tabla sesiones
             String ip = request.getRemoteAddr();
             String ua = request.getHeader("User-Agent");
             try {
@@ -88,7 +83,6 @@ public class AuthController {
                 log.warn("No se pudo actualizar metadata de sesión", e);
             }
 
-            // HU3: el token se devuelve al cliente para que lo use en Authorization header
             return ResponseEntity.ok(Map.of(
                     "mensaje", "¡Bienvenido! " + result.nombre() + ", has iniciado sesión correctamente.",
                     "sesion", result));
@@ -103,12 +97,6 @@ public class AuthController {
                     .body(Map.of("mensaje", "Algo salió mal, inténtelo de nuevo."));
         }
     }
-
-    /**
-     * HU3 – Cerrar sesión.
-     * El cliente envía el token en el header Authorization: Bearer <token>.
-     * Se invalida en la tabla sesiones (activa = false).
-     */
     @PostMapping("/logout")
     public ResponseEntity<?> cerrarSesion(
             @RequestHeader(value = "Authorization", required = false) String authHeader) {

@@ -42,8 +42,6 @@ public class CrearTareaService implements CrearTareaUseCase {
                     command.fechaLimite(), dif, pri);
 
             Tarea guardada = tareaRepository.guardar(tarea);
-
-            // Actor = administrador que creó la tarea
             String nombreAdmin = resolverNombre.resolverNombre(guardada.getIdUsuarioCreador());
             String detalle = "Tarea creada por " + nombreAdmin;
             historial.registrar(guardada.getIdHogar(), guardada.getIdTarea(),

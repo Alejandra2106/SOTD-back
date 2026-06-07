@@ -57,8 +57,6 @@ public class EditarTareaService implements EditarTareaUseCase {
 
         Tarea actualizada = tareaRepository.actualizar(tarea);
 
-        // Actor = administrador que ejecutó la edición (viene del request, no del
-        // creador)
         String nombreAdmin = resolverNombre.resolverNombre(command.idUsuarioAdmin());
         String detalle = "Tarea editada por " + nombreAdmin;
         historial.registrar(actualizada.getIdHogar(), actualizada.getIdTarea(),

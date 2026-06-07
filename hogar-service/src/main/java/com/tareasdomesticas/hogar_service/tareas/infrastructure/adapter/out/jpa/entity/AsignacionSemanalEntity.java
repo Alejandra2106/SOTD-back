@@ -31,8 +31,4 @@ public class AsignacionSemanalEntity {
     @OneToMany(mappedBy = "asignacion", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private List<AsignacionSemanalTareaEntity> tareas = new ArrayList<>();
-
-    // Nota: la tabla `asignaciones_semanales` del DDL no tiene columnas
-    // `created_at`/`updated_at` (es inmutable después de insert), por lo
-    // que no se mapean aquí.
 }

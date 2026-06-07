@@ -34,10 +34,6 @@ public final class AsignacionMapper {
 
     public static AsignacionSemanalTareaEntity toEntity(
             AsignacionSemanalTarea ast, AsignacionSemanalEntity asignacionEntity) {
-        // El mapper no toma decisiones de negocio sobre el estado.
-        // La regla "sin usuario → PENDIENTE" ya la aplica
-        // AsignacionSemanalTarea.liberarResponsable()
-        // antes de llegar aquí. El mapper solo convierte lo que el dominio ya decidió.
         AsignacionSemanalTareaId id = new AsignacionSemanalTareaId(
                 ast.getIdAsignacion(), ast.getIdTarea());
         return AsignacionSemanalTareaEntity.builder()

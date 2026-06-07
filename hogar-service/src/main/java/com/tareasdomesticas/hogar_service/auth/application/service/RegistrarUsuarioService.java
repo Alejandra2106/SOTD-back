@@ -26,19 +26,15 @@ public class RegistrarUsuarioService implements RegistrarUsuarioUseCase {
     @Override
     public RegistroResultDTO registrar(RegistrarUsuarioCommand cmd) {
 
-        // HU1: "Contraseña obligatoria (mín. 6 caracteres)."
         if (cmd.contrasena() == null || cmd.contrasena().length() < MIN_PASS)
             throw new IllegalArgumentException("Contraseña obligatoria (mín. 6 caracteres).");
 
-        // HU1: "Las contraseñas no coinciden."
         if (!cmd.contrasena().equals(cmd.confirmacionContrasena()))
             throw new IllegalArgumentException("Las contraseñas no coinciden.");
 
-        // HU1: "Este correo ya está registrado."
         if (cuentaRepo.existePorCorreo(cmd.correo().trim().toLowerCase()))
             throw new IllegalStateException("Este correo ya está registrado.");
 
-        // El constructor de CuentaUsuario valida nombre y formato de correo con mensajes HU
         String hash    = encoder.encode(cmd.contrasena());
         CuentaUsuario cuenta   = new CuentaUsuario(null, cmd.nombre(), cmd.correo(), hash, null);
         CuentaUsuario guardada = cuentaRepo.guardar(cuenta);

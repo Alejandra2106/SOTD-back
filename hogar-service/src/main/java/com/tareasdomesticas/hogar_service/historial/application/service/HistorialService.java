@@ -12,10 +12,6 @@ import org.slf4j.LoggerFactory;
 import java.time.LocalDateTime;
 import java.util.List;
 
-/**
- * Implementa ambos puertos de entrada.
- * Cumple ISP: los clientes que solo registran no necesitan exponer la consulta.
- */
 public class HistorialService implements ConsultarHistorialUseCase,
         RegistrarAccionHistorialUseCase {
 

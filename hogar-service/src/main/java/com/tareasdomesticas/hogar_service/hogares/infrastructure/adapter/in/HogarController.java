@@ -94,7 +94,6 @@ public class HogarController {
             eliminarMiembroUseCase.eliminarMiembro(
                     new EliminarMiembroCommand(hogarId, idUsuarioAutenticado,
                             req.getIdMiembro(), req.getNombreMiembro()));
-            // HU6: "Miembro eliminado. [nombre] fue eliminado del hogar."
             String msg = "Miembro eliminado. " + req.getNombreMiembro() + " fue eliminado del hogar.";
             return ResponseEntity.ok(Map.of("mensaje", msg));
         } catch (IllegalArgumentException e) {

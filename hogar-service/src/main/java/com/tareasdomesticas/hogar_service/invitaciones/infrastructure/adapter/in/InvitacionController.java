@@ -44,8 +44,6 @@ public class InvitacionController {
             InvitacionDTO inv = enviarUseCase.enviar(
                     new EnviarInvitacionCommand(idHogar, idUsuarioAutenticado,
                             req.getNombre(), req.getCorreo()));
-            // HU6: "Invitación enviada. Se envió la invitación a [nombre] ([correo]).
-            // Cuando inicie sesión podrá aceptarla."
             String msg = "Invitación enviada. Se envió la invitación a "
                     + inv.nombreInvitado() + " (" + inv.correoInvitado()
                     + "). Cuando inicie sesión podrá aceptarla.";
@@ -68,8 +66,6 @@ public class InvitacionController {
         try {
             InvitacionDTO inv = responderUseCase.responder(
                     new ResponderInvitacionCommand(idInvitacion, req.isAceptar()));
-            // HU6: "¡Te uniste al hogar! Ahora eres miembro de [nombre del hogar]."
-            // El nombre del hogar viene en el DTO; si no está disponible se usa el id
             String msg = req.isAceptar()
                     ? "¡Te uniste al hogar! Ahora eres miembro del hogar."
                     : "Invitación rechazada.";
